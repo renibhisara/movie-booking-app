@@ -31,6 +31,12 @@ const checkSeatsAvailability = async (showId, selectedSeats) => {
 };
 
 const createBooking = async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
     try {
         console.log('createBooking hit with body:', req.body);
         console.log('User ID from token:', req.user._id);
@@ -62,9 +68,9 @@ const createBooking = async (req, res) => {
         const isAnySeatTaken = selectedSeats.some(seat => showData.occupiedSeats[seat]);
         if (isAnySeatTaken) {
             const takenSeats = selectedSeats.filter(seat => showData.occupiedSeats[seat]);
-            return res.status(400).json({ 
-                success: false, 
-                error: `Seats ${takenSeats.join(', ')} are already taken` 
+            return res.status(400).json({
+                success: false,
+                error: `Seats ${takenSeats.join(', ')} are already taken`
             });
         }
 
@@ -98,7 +104,7 @@ const createBooking = async (req, res) => {
                 line_items: [{
                     price_data: {
                         currency: 'inr',
-                        product_data: { 
+                        product_data: {
                             name: `${movieTitle} - ${selectedSeats.length} seats`,
                             metadata: { bookingId: booking._id.toString() }
                         },
@@ -123,10 +129,10 @@ const createBooking = async (req, res) => {
             console.warn('No Stripe - using relative redirect');
         }
 
-        res.status(201).json({ 
-            success: true, 
+        res.status(201).json({
+            success: true,
             url: paymentUrl,
-            bookingId: booking._id 
+            bookingId: booking._id
         });
 
     } catch (error) {

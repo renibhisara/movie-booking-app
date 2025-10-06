@@ -12,6 +12,7 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+// Remove this line: app.options('*', cors());  // Redundant - cors() handles OPTIONS
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -40,3 +41,6 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
+
+// Vercel Serverless Export (Add this)
+module.exports = app;
