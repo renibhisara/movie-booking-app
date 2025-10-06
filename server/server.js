@@ -2,7 +2,20 @@ const express = require('express');
 const app = express();
 
 const cors = require('cors');
-app.use(cors());
+app.use(cors({
+    origin: [
+        'https://movie-booking-app.vercel.app',
+        'https://*.vercel.app',  // Allow previews
+        'http://localhost:5173'  // Local dev
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Handle preflight
+app.options('*', cors());
+
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -25,7 +38,7 @@ const adminRouter = require('./routes/adminRoutes');
 app.use('/api/admin', adminRouter);
 
 const userRouter = require('./routes/userRoutes');
-app.use('/api/user', userRouter); 
+app.use('/api/user', userRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

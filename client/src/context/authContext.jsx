@@ -6,7 +6,8 @@ import toast from 'react-hot-toast';
 const AuthContext = createContext();
 
 // ✅ ek var set karo baseURL
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
+const baseURL = import.meta.env.VITE_BASE_URL || '';  
+axios.defaults.baseURL = baseURL;
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
