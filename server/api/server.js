@@ -5,14 +5,13 @@ const cors = require('cors');
 app.use(cors({
     origin: [
         'https://movie-booking-app.vercel.app',
-        'https://*.vercel.app',  // Allow previews 
-        'http://localhost:5173'  // Local dev
+        'https://*.vercel.app',  // Previews
+        'http://localhost:5173'  // Local
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
-// Remove this line: app.options('*', cors());  // Redundant - cors() handles OPTIONS
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -38,9 +37,11 @@ const userRouter = require('./routes/userRoutes');
 app.use('/api/user', userRouter);
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+      console.log(`Server listening at http://localhost:${port}`);
+  });
+}
 
-// Vercel Serverless Export (Add this)
+// Vercel Export
 module.exports = app;

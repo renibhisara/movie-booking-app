@@ -1,6 +1,6 @@
 {
   "functions": {
-    "server.js": { "runtime": "nodejs18.x" }
+    "server/api/server.js": { "runtime": "nodejs18.x" }
   },
   "headers": [
     {
@@ -13,7 +13,7 @@
     }
   ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/server.js/api/$1" },
+    { "source": "/api/(.*)", "destination": "/server/api/server.js/api/$1" },
     { "source": "/(.*)", "destination": "/client/index.html" }
   ]
 }
